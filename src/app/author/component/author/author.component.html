@@ -1,0 +1,139 @@
+<div class="card m-2">
+    <div class="card-header">
+        Autores
+    </div>
+    <div class="row m-2">
+        <div class="col-7">
+            <input type="search" class="form-control">
+        </div>
+        <div class="col-5 text-end">
+            <button type="button" (click)="form.reset()" class="btn btn-outline-primary" data-bs-toggle="modal"
+                data-bs-target="#exampleModal">
+                <i class="fa-solid fa-address-book"></i>
+            </button>
+        </div>
+        <!--Ventana Modal para Nuevo Author-->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo/Edit Author</h1>
+                        <button type="button" class="btn-close" id="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!--Formulario-->
+                        <form #form="ngForm" (ngSubmit)="onSubnmit()">
+                            <div class="mb-3">
+                                <label for="name" class="col-form-label">Nombre:</label>
+                                <!--Input name-->
+                                <input type="text" class="form-control" id="name" name="name" [(ngModel)]="author.name"
+                                    #name="ngModel" required minlength="8">
+                                <!--Validation input-->
+                                <div class="text-danger" *ngIf="name.invalid && (name.touched)">
+                                    <div *ngIf="name.errors?.['required']">El nombre es requerido.</div>
+                                    <div *nfIf="name.errors?.['minlength']">Cantidad minima de 8 car</div>
+                                </div>
+                            </div>
+                            <!--Input name-->
+                            <div class="mb-3">
+                                <label for="lastname" class="col-form-label">Apellido:</label>
+                                <!--Input name-->
+                                <input type="text" class="form-control" id="lastname" name="lastname"
+                                    [(ngModel)]="author.lastname" #lastname="ngModel" required minlength="8">
+                                <!--Validation input-->
+                                <div class="text-danger" *ngIf="lastname.invalid && (lastname.touched)">
+                                    <div *ngIf="lastname.errors?.['required']">El apellido es requerido.</div>
+                                    <div *nfIf="lastname.errors?.['minlength']">Cantidad minima de 8 car</div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <!--Fin Input Biography-->
+                                <label for="biography" class="col-form-label">Biografia</label>
+                                <textarea class="form-control" id="biography" name="biography"
+                                    [(ngModel)]="author.biography" #biography="ngModel"></textarea>
+                                <!--Validation textarea-->
+                                <div class="text-danger"
+                                    *ngIf="lastname.invalid && (lastname.dirty || lastname.touched)">
+                                    Biografia es requerida
+                                </div>
+                                <!--Fin Biography-->
+                            </div>
+                            <!--Botones-->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Enviar</button>
+                            </div>
+                        </form>
+                        <!--End Formulario-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Fin Modal Author-->
+        <!--Modal Eliminar-->
+        <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Author</h1>
+                        <button type="button" class="btn-close" id="btn-delete" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Está seguro de Eliminar el registro?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-danger" (click)="onDelete()">Si</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Fin Modal Eliminar-->
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellidos</th>
+                    <th scope="col">Biografia</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let author of authors">
+                    <th scope="row">{{author.id}}</th>
+                    <td>{{author.name}}</td>
+                    <td>{{author.lastname}}</td>
+                    <td>{{author.biography}}</td>
+                    <td>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="button" (click)="onEdit(author)"  class="btn btn-outline-primary">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button type="button" (click)="onSelected(author)" data-bs-toggle="modal" data-bs-target="#modal"
+                             class="btn btn-outline-danger">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                        </div>
+                        <!--Fin Botones para editar y eliminar-->
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    </ul>
+                </nav>
+            </tfoot>
+        </table>
+    </div>
+</div>
